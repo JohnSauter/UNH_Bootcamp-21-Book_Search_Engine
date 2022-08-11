@@ -1,0 +1,23 @@
+Routes in the original application
+
+getSingleUser: /api/users/me get passes token which provides username and id.
+	Requires authentication.  Returns User.
+createUser: /api/users post passes userData: username, email and password.
+loginUser: /api/users/login post passes email and password.
+saveBook: /api/users put passes token and bookData: bookId, authors, title,
+	description and image.  Requires authentication.  Book has unused link.
+deleteBook: /api/users/books/:bookid delete passes token.  Requires authentication.
+
+Queries:
+GetSingleUser: passes the token, returns User corresponding to token.
+
+Mutations:
+CreateUser: passes username, email and password.  
+  Returns user and signed token as an Auth.
+LoginUser: passes email and password.  User is identified by email.  
+  Returns User and signed token as an Auth.
+SaveBook: passes the token, author array, description, title, book id,
+  image and link?, returns the updated User as an Auth.
+DeleteBook: passes the token and the book id.  Returns the updated User
+	as an Auth.
+
