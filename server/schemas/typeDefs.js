@@ -19,8 +19,8 @@ const typeDefs = gql`
   }
 
   type Auth {
-    user: String!
-    token: String!
+    token: ID!
+    user: User
   }
 
   type Query {
@@ -37,8 +37,8 @@ const typeDefs = gql`
       bookId: String!
       image: String!
       link: String
-    ): Auth
-    deleteBook(bookId: String!): Auth
+    ): User
+    deleteBook(bookId: String!): User
   }
 `;
 
