@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client";
 import { MUTATION_LOGIN_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
+import { saveBookIds } from '../utils/localStorage';
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
@@ -34,6 +35,8 @@ const LoginForm = () => {
       });
 
       Auth.login(data.loginUser.token);
+
+      saveBookIds(data.loginUser.books)
     } catch (e) {
       console.error(e);
       setShowAlert(true);

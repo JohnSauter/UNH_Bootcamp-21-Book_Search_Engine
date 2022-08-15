@@ -43,7 +43,7 @@ const resolvers = {
       return { user, token };
     },
 
-    saveBook: async (parent, args, context) => {
+    addBook: async (parent, args, context) => {
       if (context.user) {
         const authors = args.authors;
         const description = args.description;
@@ -57,7 +57,7 @@ const resolvers = {
           { $addToSet: { savedBooks: newBook } },
           { new: true, runValidators: true }
         );
-        return { user: updatedUser };
+        return updatedUser ;
       }
       throw new AuthenticationError("You need to be logged in for save.");
     },
