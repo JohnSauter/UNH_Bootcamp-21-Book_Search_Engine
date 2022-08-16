@@ -51,6 +51,7 @@ const resolvers = {
         const image = args.image;
         const link = args.link;
         const unique_id = args.unique_id;
+        const previewLink = args.previewLink;
         const newBook = {
           authors,
           description,
@@ -59,6 +60,7 @@ const resolvers = {
           image,
           link,
           unique_id,
+          previewLink,
         };
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },

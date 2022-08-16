@@ -38,6 +38,7 @@ export const MUTATION_ADD_BOOK = gql`
     $image: String!
     $link: String
     $unique_id: ID!
+    $previewLink: String!
   ) {
     addBook(
       authors: $authors
@@ -47,6 +48,7 @@ export const MUTATION_ADD_BOOK = gql`
       image: $image
       link: $link
       unique_id: $unique_id
+      previewLink: $previewLink
     ) {
       _id
       username
@@ -59,6 +61,7 @@ export const MUTATION_ADD_BOOK = gql`
         image
         link
         unique_id
+        previewLink
       }
     }
   }
@@ -78,6 +81,7 @@ export const MUTATION_DELETE_BOOK = gql`
         image
         link
         unique_id
+        previewLink
       }
     }
   }

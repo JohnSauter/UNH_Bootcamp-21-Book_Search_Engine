@@ -15,6 +15,7 @@ export const QUERY_GET_SINGLE_USER = gql`
         image
         link
         unique_id
+        previewLink
       }
     }
   }

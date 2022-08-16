@@ -10,6 +10,7 @@ const typeDefs = gql`
     image: String!
     link: String
     unique_id: ID!
+    previewLink: String
   }
 
   type User {
@@ -40,6 +41,7 @@ const typeDefs = gql`
       image: String!
       link: String
       unique_id: ID!
+      previewLink: String!
     ): User
     deleteBook(unique_id: ID!): User
   }

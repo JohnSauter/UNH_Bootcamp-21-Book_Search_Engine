@@ -31,6 +31,10 @@ const bookSchema = new Schema({
     type: String,
     required: true,
   },
+  previewLink: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = bookSchema;

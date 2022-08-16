@@ -54,7 +54,9 @@ const SearchBooks = () => {
         throw new Error("something went wrong!");
       }
 
-      const { items } = await response.json();
+      const google_books_search_result = await response.json();
+      console.log(google_books_search_result);
+      const items = google_books_search_result.items;
 
       /* Note that the book.id is not unique, so we use
        * our own unique_id field to distinguish books.  */
@@ -64,10 +66,9 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || "",
+        previewLink: book.volumeInfo.previewLink,
         unique_id: uuidv4(),
       }));
-
-      
 
       setSearchedBooks(bookData);
       setSearchInput("");
@@ -144,7 +145,12 @@ const SearchBooks = () => {
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
                   <p className="small">Authors: {book.authors}</p>
-                  <p>unique_id: {book.unique_id}</p>
+                  <p>
+                    <a href={book.previewLink} rel="noreferrer" target="_blank">
+                      Google preview
+                    </a>
+                  </p>
+                  {/* <p>unique_id: {book.unique_id}</p> */}
                   <Card.Text>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
