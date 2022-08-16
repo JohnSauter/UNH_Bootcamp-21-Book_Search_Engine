@@ -37,11 +37,11 @@ GNU AGPLv3
 
 ## Deployment URL
 
-TBD
+https://guarded-eyrie-94516.herokuapp.com/
 
 ## Screenshot
 
-TBD
+![screenshot for book search engine](./assets/images/screenshot.png)
 
 ## Questions
 
