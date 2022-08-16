@@ -109,6 +109,11 @@ const SavedBooks = () => {
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
                   <p className="small">Authors: {book.authors}</p>
+                  <p>
+                    <a href={book.previewLink} rel="noreferrer" target="_blank">
+                      Google preview
+                    </a>
+                  </p>
                   <Card.Text>{book.description}</Card.Text>
                   <Button
                     className="btn-block btn-danger"
