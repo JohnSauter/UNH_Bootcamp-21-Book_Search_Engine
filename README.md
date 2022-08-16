@@ -22,8 +22,10 @@ npm run develop
 
 ## Usage
 
-Click on a button in the header to see the information 
-in the section below.
+You can log in or create an account.
+Once you have an account you can search for books by title
+and save them on a list of books you would like to read.
+You can delete a book from the list once you have read it.
 
 ## Credits
 
