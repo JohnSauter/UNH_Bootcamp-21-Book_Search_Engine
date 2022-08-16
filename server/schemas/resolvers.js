@@ -8,9 +8,8 @@ const resolvers = {
   Query: {
     getSingleUser: async (parent, args, context) => {
       if (context.user) {
-        const foundUser = await User.findOnebyId(args.user._id);
-        const token = signToken(foundUser);
-        return { user: foundUser, token };
+        const foundUser = await User.findById(context.user._id);
+        return foundUser;
       }
       throw new AuthenticationError("You need to be logged in!");
     },
@@ -51,26 +50,36 @@ const resolvers = {
         const bookId = args.bookId;
         const image = args.image;
         const link = args.link;
-        const newBook = { authors, description, title, bookId, image, link };
+        const unique_id = args.unique_id;
+        const newBook = {
+          authors,
+          description,
+          title,
+          bookId,
+          image,
+          link,
+          unique_id,
+        };
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { savedBooks: newBook } },
           { new: true, runValidators: true }
         );
-        return updatedUser ;
+        return updatedUser;
       }
       throw new AuthenticationError("You need to be logged in for save.");
     },
 
     deleteBook: async (parent, args, context) => {
       if (context.user) {
-        const bookId = args.bookId;
+        const unique_id = args.unique_id;
+        const user_id = context.user._id;
         const updatedUser = await User.findOneAndUpdate(
-          { _id: args.user._id },
-          { $pull: { savedBooks: { bookId } } },
+          { _id: user_id },
+          { $pull: { savedBooks: { unique_id } } },
           { new: true }
         );
-        return { user: updatedUser };
+        return updatedUser;
       }
       throw new AuthenticationError("You need to be logged in for delete.");
     },

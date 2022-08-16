@@ -6,9 +6,16 @@ export const QUERY_GET_SINGLE_USER = gql`
       _id
       username
       email
-      books {
+      savedBooks {
         _id
+        authors
+        description
+        title
+        bookId
+        image
+        link
+        unique_id
       }
     }
   }
-  `;
+`;

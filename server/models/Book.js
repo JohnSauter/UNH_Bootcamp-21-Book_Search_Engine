@@ -27,6 +27,10 @@ const bookSchema = new Schema({
     type: String,
     required: true,
   },
+  unique_id: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = bookSchema;

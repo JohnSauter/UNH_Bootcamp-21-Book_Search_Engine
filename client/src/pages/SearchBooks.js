@@ -9,6 +9,8 @@ import {
   CardColumns,
 } from "react-bootstrap";
 
+import { v4 as uuidv4 } from "uuid";
+
 import Auth from "../utils/auth";
 import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
@@ -24,7 +26,7 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
 
-  // create state to hold saved bookId values
+  // create state to hold saved book unique_id values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   const [addBook] = useMutation(MUTATION_ADD_BOOK, {
@@ -54,13 +56,18 @@ const SearchBooks = () => {
 
       const { items } = await response.json();
 
+      /* Note that the book.id is not unique, so we use
+       * our own unique_id field to distinguish books.  */
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ["No author to display"],
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || "",
+        unique_id: uuidv4(),
       }));
+
+      
 
       setSearchedBooks(bookData);
       setSearchInput("");
@@ -70,19 +77,21 @@ const SearchBooks = () => {
   };
 
   // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId) => {
+  const handleSaveBook = async (unique_id) => {
     // find the book in `searchedBooks` state by the matching id
-    const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
+    const bookToSave = searchedBooks.find(
+      (book) => book.unique_id === unique_id
+    );
 
-    /* mutation */
     try {
-      const { data } = await addBook({
+      const { updated_user } = await addBook({
         variables: { ...bookToSave },
       });
-      console.log(data);
+      console.log(updated_user);
 
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      // if book successfully saves to user's account,
+      // save book unique_id to state
+      setSavedBookIds([...savedBookIds, bookToSave.unique_id]);
     } catch (err) {
       console.error(err);
     }
@@ -124,7 +133,7 @@ const SearchBooks = () => {
         <CardColumns>
           {searchedBooks.map((book) => {
             return (
-              <Card key={book.bookId} border="dark">
+              <Card key={book.unique_id} border="dark">
                 {book.image ? (
                   <Card.Img
                     src={book.image}
@@ -135,17 +144,18 @@ const SearchBooks = () => {
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
                   <p className="small">Authors: {book.authors}</p>
+                  <p>unique_id: {book.unique_id}</p>
                   <Card.Text>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
                       disabled={savedBookIds?.some(
-                        (savedBookId) => savedBookId === book.bookId
+                        (savedBookId) => savedBookId === book.unique_id
                       )}
                       className="btn-block btn-info"
-                      onClick={() => handleSaveBook(book.bookId)}
+                      onClick={() => handleSaveBook(book.unique_id)}
                     >
                       {savedBookIds?.some(
-                        (savedBookId) => savedBookId === book.bookId
+                        (savedBookId) => savedBookId === book.unique_id
                       )
                         ? "This book has already been saved!"
                         : "Save this Book!"}
