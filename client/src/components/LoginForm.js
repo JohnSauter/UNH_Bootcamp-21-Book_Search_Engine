@@ -5,12 +5,13 @@ import { useMutation } from "@apollo/client";
 import { MUTATION_LOGIN_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
-import { saveBookIds } from '../utils/localStorage';
+import { saveBookIds } from "../utils/localStorage";
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertText, setShowAlertText] = useState("");
   const [loginUser] = useMutation(MUTATION_LOGIN_USER);
 
   // update state based on form input changes
@@ -36,9 +37,10 @@ const LoginForm = () => {
 
       Auth.login(data.loginUser.token);
 
-      saveBookIds(data.loginUser.books)
+      saveBookIds(data.loginUser.books);
     } catch (e) {
-      console.error(e);
+      console.log(e);
+      setShowAlertText(e.message);
       setShowAlert(true);
     }
 
@@ -58,7 +60,7 @@ const LoginForm = () => {
           show={showAlert}
           variant="danger"
         >
-          Something went wrong with your login credentials!
+          Something went wrong with your login: {showAlertText}
         </Alert>
         <Form.Group>
           <Form.Label htmlFor="email">Email</Form.Label>

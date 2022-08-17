@@ -17,6 +17,7 @@ const SignupForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertText, setShowAlertText] = useState("");
 
   const [createUser] = useMutation(MUTATION_CREATE_USER);
 
@@ -39,6 +40,7 @@ const SignupForm = () => {
       Auth.login(data.createUser.token);
     } catch (e) {
       console.error(e);
+      setShowAlertText(e.message);
       setShowAlert(true);
     }
   };
@@ -59,7 +61,7 @@ const SignupForm = () => {
           show={showAlert}
           variant="danger"
         >
-          Something went wrong with your signup!
+          Something went wrong with your signup: {showAlertText}
         </Alert>
 
         <Form.Group>

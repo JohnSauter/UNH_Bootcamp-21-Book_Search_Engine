@@ -20,6 +20,14 @@ const resolvers = {
       const username = args.username;
       const email = args.email;
       const password = args.password;
+      let olduser = await User.findOne({username: username});
+      if (olduser) {
+        throw new AuthenticationError("User Name already in use.");
+      }
+      olduser = await User.findOne({email: email});
+      if (olduser) {
+        throw new AuthenticationError("Email already in use.");
+      }
       const newUser = await User.create({ username, email, password });
       const token = signToken(newUser);
       return { user: newUser, token };
@@ -30,12 +38,12 @@ const resolvers = {
       const password = args.password;
       const user = await User.findOne({ email });
       if (!user) {
-        throw new AuthenticationError("No user found with this email address");
+        throw new AuthenticationError("No user found with this email address.");
       }
 
       const correctPw = await user.isCorrectPassword(password);
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new AuthenticationError("Incorrect credentials.");
       }
 
       const token = signToken(user);
